@@ -1,0 +1,97 @@
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:2.0.2:compile (default-compile) on project pa_web: Compilation failure
+[ERROR] D:\hudson\SP20-PA\trunk_build\SP20\src\main\java\com\ebao\insurance\rest\QuotationHistoryResources.java:[98,9] cannot find symbol
+[ERROR] symbol  : method setChannelId(java.lang.String)
+[ERROR] location: class com.ebao.insurance.quotation.vo.QuotationQueryVO
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+
+
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ CIMailRobot ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 3 source files to D:\home\javazone\Corona\CIMailRobot\target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/home/javazone/Corona/CIMailRobot/src/main/java/com/ebao/scm/tools/CIMailParser.java:[29,34] D:\home\javazone\Corona\CIMailRobot\src\main\java\com\ebao\scm\tools\CIMailParser.java:29: ';' expected
+[INFO] 1 error
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+
+
+
+
+[exec] [INFO] ------------------------------------------------------------------------
+[exec] [ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:2.0.2:compile (default-compile) on project zhongxin: Compilation failure: Compilation failure:
+[exec] [ERROR] /home/build/zhongan-channel/product/zhongxin/src/main/java/com/ebao/gs/zhongxin/service/impl/ZhongxinPolicyExtensionServiceImpl.java:[13,9] cannot find symbol
+[exec] [ERROR] symbol  : class CreditCardDAO
+[exec] [ERROR] location: class com.ebao.gs.zhongxin.service.impl.ZhongxinPolicyExtensionServiceImpl
+[exec] [ERROR] 
+[exec] [ERROR] /home/build/zhongan-channel/product/zhongxin/src/main/java/com/ebao/gs/zhongxin/service/impl/ZhongxinPolicyExtensionServiceImpl.java:[12,18] cannot find symbol
+[exec] [ERROR] symbol  : variable CreditCardDAO
+[exec] [ERROR] location: class com.ebao.gs.zhongxin.service.impl.ZhongxinPolicyExtensionServiceImpl
+[exec] [ERROR] 
+[exec] [ERROR] /home/build/zhongan-channel/product/zhongxin/src/main/java/com/ebao/gs/zhongxin/service/impl/ZhongxinPreClaimServiceImpl.java:[30,17] cannot find symbol
+[exec] [ERROR] symbol  : method getCardStatus()
+[exec] [ERROR] location: class com.ebao.gs.zhongxin.csv.model.CardStatus
+[exec] [ERROR] 
+[exec] [ERROR] /home/build/zhongan-channel/product/zhongxin/src/main/java/com/ebao/gs/zhongxin/service/impl/ZhongxinPolicyExtensionServiceImpl.java:[21,2] cannot find symbol
+[exec] [ERROR] symbol  : class CreditCard
+[exec] [ERROR] location: class com.ebao.gs.zhongxin.service.impl.ZhongxinPolicyExtensionServiceImpl
+[exec] [ERROR] 
+[exec] [ERROR] /home/build/zhongan-channel/product/zhongxin/src/main/java/com/ebao/gs/zhongxin/service/impl/ZhongxinPolicyExtensionServiceImpl.java:[25,26] cannot find symbol
+[exec] [ERROR] symbol  : variable DateUtils
+[exec] [ERROR] location: class com.ebao.gs.zhongxin.service.impl.ZhongxinPolicyExtensionServiceImpl
+[exec] [ERROR] -> [Help 1]
+
+
+
+    [javac] Compiling 197 source files to D:\hudson\jobs\ArgoUS_GS_R15_ContinueCompile\temp\tmp
+    [javac] D:\hudson\jobs\ArgoUS_GS_R15_ContinueCompile\ArgoUS_GS_R15_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\pa\common\calculation\model\builder\impl\CoverPremiumModelBuilderImpl.java:33: package com.ebao.gs.prdtmgmt.product.service does not exist
+    [javac] import com.ebao.gs.prdtmgmt.product.service.ProductDefineService;
+    [javac]                                             ^
+    [javac] D:\hudson\jobs\ArgoUS_GS_R15_ContinueCompile\ArgoUS_GS_R15_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\pa\common\calculation\model\builder\impl\CoverPremiumModelBuilderImpl.java:308: cannot find symbol
+    [javac] symbol  : variable ProductDefineService
+    [javac] location: class com.ebao.gs.pa.common.calculation.model.builder.impl.CoverPremiumModelBuilderImpl
+    [javac]             List<Map<String, String>> list = ProductDefineService
+    [javac]                                              ^
+    [javac] D:\hudson\jobs\ArgoUS_GS_R15_ContinueCompile\ArgoUS_GS_R15_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\pa\common\calculation\model\builder\impl\CoverPremiumModelBuilderImpl.java:314: cannot find symbol
+    [javac] symbol  : variable ProductDefineService
+    [javac] location: class com.ebao.gs.pa.common.calculation.model.builder.impl.CoverPremiumModelBuilderImpl
+    [javac]             str = ProductDefineService.getProductCodetableCodeById(list, bvo
+    [javac]                   ^
+    [javac] D:\hudson\jobs\ArgoUS_GS_R15_ContinueCompile\ArgoUS_GS_R15_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\pa\common\calculation\model\builder\impl\CoverPremiumModelBuilderImpl.java:339: cannot find symbol
+    [javac] symbol  : variable ProductDefineService
+    [javac] location: class com.ebao.gs.pa.common.calculation.model.builder.impl.CoverPremiumModelBuilderImpl
+    [javac]             List<Map<String, String>> list = ProductDefineService
+    [javac]                                              ^
+    [javac] D:\hudson\jobs\ArgoUS_GS_R15_ContinueCompile\ArgoUS_GS_R15_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\pa\common\calculation\model\builder\impl\CoverPremiumModelBuilderImpl.java:345: cannot find symbol
+    [javac] symbol  : variable ProductDefineService
+    [javac] location: class com.ebao.gs.pa.common.calculation.model.builder.impl.CoverPremiumModelBuilderImpl
+    [javac]             str = ProductDefineService.getProductCodetableCodeById(list, bvo
+    [javac]                   ^
+    [javac] D:\hudson\jobs\ArgoUS_GS_R15_ContinueCompile\ArgoUS_GS_R15_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\pa\common\calculation\model\builder\impl\CoverPremiumModelBuilderImplaa.java:374: cannot find symbol
+    [javac] symbol  : variable ProductDefineService
+    [javac] location: class com.ebao.gs.pa.common.calculation.model.builder.impl.CoverPremiumModelBuilderImpl
+    [javac]         List<Map<String, String>> list = ProductDefineService
+    [javac]                                          ^
+    [javac] D:\hudson\jobs\ArgoUS_GS_R15_ContinueCompile\ArgoUS_GS_R15_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\pa\common\calculation\model\builder\impl\CoverPremiumModelBuilderImplab.java:379: cannot find symbol
+    [javac] symbol  : variable ProductDefineService
+    [javac] location: class com.ebao.gs.pa.common.calculation.model.builder.impl.CoverPremiumModelBuilderImpl
+    [javac]         val = ProductDefineService.getProductCodetableCodeById(list, val);
+    [javac]               ^
+    [javac] 7 errors
+
+
+[javac] D:\hudson\jobs\ArgoUS_R21GS_ContinueCompile\master_ArgoUS_R21_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\rating\common\model\mapping\impl\CoverPremiumModelMappingImpl.java:254: ')' expected
+[javac] acceSOABO.setProperty("US02ClassCodeMinPremBenefit", interestPremiumModel
+[javac] ^
+[javac] D:\hudson\jobs\ArgoUS_R21GS_ContinueCompile\master_ArgoUS_R21_ContinueCompile\ArgoUS_SRC\pa\core\java\com\ebao\gs\rating\common\model\mapping\impl\CoverPremiumModelMappingImpl.java:256: illegal start of expression
+[javac] .getField08());
+[javac] ^
+[javac] 2 errors
