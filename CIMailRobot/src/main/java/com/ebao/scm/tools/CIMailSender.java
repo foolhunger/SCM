@@ -88,6 +88,7 @@ public final class CIMailSender extends CIMailLogger {
 			houseKeeping();
 			System.exit(-1);
 		}
+		ciMailToList = new HashMap<String, String>(20);
 	}
 	
 	private String generateMailBody(final ArrayList<String> compileErrLogs, final HashMap<String, String> compileErrDetails) {
@@ -109,7 +110,7 @@ public final class CIMailSender extends CIMailLogger {
 			ctfUtils = new CIMailCTFUtils();
 			ctfUtils.login();
 		}
-		ciMailTOs = "";
+		ciMailToList.clear();
 		while (sin.hasNextLine()) {
 			String line = sin.nextLine();
 			Matcher mtrHL = ptnHL.matcher(line);
@@ -155,7 +156,7 @@ public final class CIMailSender extends CIMailLogger {
 						}
 					}
 					else {
-						if (username.startsWith("alm.") || username.startsWith("cht.") || !username.contains(".") 
+						if (username.startsWith("alm.") || username.startsWith("cht.") || username.startsWith("sf.") || !username.contains(".") 
 								|| (username.indexOf(".") != username.lastIndexOf(".")) || username.matches(".+\\d+.*")) {
 							fullname = username;
 						}
@@ -165,6 +166,7 @@ public final class CIMailSender extends CIMailLogger {
 						}
 						email = username + "@" + mailDefaultDomain;
 					}
+					ciMailToList.put(email.trim(), "");
 					
 					message.replaceAll("<", "(");
 					message.replaceAll(">", ")");
@@ -188,7 +190,6 @@ public final class CIMailSender extends CIMailLogger {
 					}
 					sbMailBody.append(mtrED.group(1) + "File: " + compileErrDetail.getKey() + ": r" + revision + "<br>\n");
 					sbMailBody.append(mtrED.group(1) + "Detail: [<b style=\"color:#A52A2A;\">" + fullname + "</b>]" + message + "<br><br>\n");
-					ciMailTOs += (email + ",");
 				}
 				continue;
 			}
@@ -209,7 +210,6 @@ public final class CIMailSender extends CIMailLogger {
 		if (ciSyncCTFArtfTitle.equalsIgnoreCase("Yes") || ciSyncCTFUserInfo.equalsIgnoreCase("Yes")) {
 			ctfUtils.logoff();
 		}
-		stdLogger.println("==> mailTOs: [" + ciMailTOs + "]");
 		return sbMailBody.toString();
 	}
 	
@@ -229,16 +229,25 @@ public final class CIMailSender extends CIMailLogger {
 		
 		String mailBody = generateMailBody(compileErrLogs, compileErrDetails);
 		
-		String[] CCers = ciMailCCs.split(",");
-		ciMailCCs = "";
-		for (String CCer: CCers) {
-			if (CCer.isEmpty()) {
+		String ciMailTOs = "";
+		for (String ciMailTo: ciMailToList.keySet()) {
+			if (ciMailTo.isEmpty()) {
 				continue;
 			}
-			if (!CCer.contains("@")) {
-				CCer += ("@" + mailDefaultDomain);
+			ciMailTOs += (ciMailTo + ",");
+		}
+		stdLogger.println("==> mailTOs: [" + ciMailTOs + "]");
+		
+		String[] ciMailCcList = ciMailCCs.split(",");
+		ciMailCCs = "";
+		for (String ciMailCc: ciMailCcList) {
+			if (ciMailCc.isEmpty()) {
+				continue;
 			}
-			ciMailCCs += (CCer + ",");
+			if (!ciMailCc.contains("@")) {
+				ciMailCc += ("@" + mailDefaultDomain);
+			}
+			ciMailCCs += (ciMailCc + ",");
 		}
 		stdLogger.println("==> mailCCs: [" + ciMailCCs + "]");
 		
@@ -288,5 +297,5 @@ public final class CIMailSender extends CIMailLogger {
 	private String ciSyncCTFArtfTitle;
 	private String ciSyncCTFUserInfo;
 	//
-	private String ciMailTOs;
+	private HashMap<String, String> ciMailToList;
 }

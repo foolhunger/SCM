@@ -85,7 +85,7 @@
   		<version>1.8.5</version>
   	</dependency>
   	<dependency>
-    	<groupId>net.collab.teamforge</groupId>
+  		<groupId>com.collabnet</groupId>
     	<artifactId>sf_soap60_sdk</artifactId>
     	<version>1.0</version>
 		</dependency>
