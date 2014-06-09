@@ -170,7 +170,7 @@ public final class CIMailSender extends CIMailLogger {
           
           message.replaceAll("<", "(");
           message.replaceAll(">", ")");
-          Pattern ptnArtfact = Pattern.compile("\\A\\s*\\[(artf\\d+)\\]\\s*\\:?\\s*(.*?)\\s*\\Z", Pattern.CASE_INSENSITIVE);
+          Pattern ptnArtfact = Pattern.compile("\\A\\s*\\[(artf\\d+)\\]\\s*\\:?\\s*(.*?)\\s*\\Z", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
           Matcher mtrArtfact = ptnArtfact.matcher(message);
           if (mtrArtfact.find()) {
             artfId = mtrArtfact.group(1);
