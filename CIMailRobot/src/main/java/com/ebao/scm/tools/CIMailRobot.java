@@ -26,8 +26,8 @@ public final class CIMailRobot extends CIMailLogger {
   public void doWork() {
     CIMailParser parser = new CIMailParser();
     if(parser.parse(ciErrLog, ciSrcURL)) {
-      ArrayList<String> compileErrLogs = parser.getCompileErrLogs();
-      HashMap<String, String> compileErrDetails = parser.getCompileErrDetails();
+      final ArrayList<String> compileErrLogs = parser.getCompileErrLogs();
+      final HashMap<String, String> compileErrDetails = parser.getCompileErrDetails();
       
       CIMailSender sender = new CIMailSender();
       sender.send(compileErrLogs, compileErrDetails);
@@ -50,9 +50,9 @@ public final class CIMailRobot extends CIMailLogger {
     robot.houseKeeping();
   }
   
-  private PrintWriter stdLogger = stdLoggerFactory();
-  private PrintWriter errLogger = errLoggerFactory();
+  private final PrintWriter stdLogger = stdLoggerFactory();
+  private final PrintWriter errLogger = errLoggerFactory();
   // system properites [-D]
-  private String ciSrcURL;
-  private String ciErrLog;
+  private final String ciSrcURL;
+  private final String ciErrLog;
 }

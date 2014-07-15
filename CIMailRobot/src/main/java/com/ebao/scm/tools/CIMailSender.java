@@ -1,21 +1,23 @@
 package com.ebao.scm.tools;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.util.Scanner;
-import javax.mail.internet.MimeMessage;
-import javax.mail.MessagingException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 public final class CIMailSender extends CIMailLogger {
@@ -35,56 +37,56 @@ public final class CIMailSender extends CIMailLogger {
       ciBuildType = "Nightly Build";
     }
     
+    InputStream ins = CIMailSender.class.getResourceAsStream("CIMailRobot.properties");
+    if (ins == null) {
+      System.out.println("==> Oops, failed to read property file [CIMailRobot.properites] [CIMailSender()]");
+      errLogger.println("==> Oops, failed to read property file [CIMailRobot.properites] [CIMailSender()]");
+      houseKeeping();
+      System.exit(-1);
+    }
+    Properties props = new Properties();
     try {
-      InputStream ins = CIMailSender.class.getResourceAsStream("CIMailRobot.properties");
-      if (ins == null) {
-        System.out.println("==> Oops, failed to read property file [CIMailRobot.properites] [CIMailSender()]");
-        errLogger.println("==> Oops, failed to read property file [CIMailRobot.properites] [CIMailSender()]");
-        houseKeeping();
-        System.exit(-1);
-      }
-      Properties props = new Properties();
       props.load(ins);
-      mailSmtpHost = props.getProperty("mail.smtp.host", "").trim();
-      if (mailSmtpHost.isEmpty()) {
-        System.out.println("==> Oops, failed to read property [mail.smtp.host] [CIMailRobot.properites]");
-        errLogger.println("==> Oops, failed to read property [mail.smtp.host] [CIMailRobot.properites]");
-        houseKeeping();
-        System.exit(-1);
-      }
-      mailSmtpPort = props.getProperty("mail.smtp.port", "").trim();
-      if (mailSmtpPort.isEmpty()) {
-        System.out.println("==> Oops, failed to read property [mail.smtp.port] [CIMailRobot.properites]");
-        errLogger.println("==> Oops, failed to read property [mail.smtp.port] [CIMailRobot.properites]");
-        houseKeeping();
-        System.exit(-1);
-      }
-      mailAuthUsername = props.getProperty("mail.auth.username", "").trim();
-      if (mailAuthUsername.isEmpty()) {
-        System.out.println("==> Oops, failed to read property [mail.auth.username] [CIMailRobot.properites]");
-        errLogger.println("==> Oops, failed to read property [mail.auth.username] [CIMailRobot.properites]");
-        houseKeeping();
-        System.exit(-1);
-      }
-      mailAuthPassword = props.getProperty("mail.auth.password", "").trim();
-      if (mailAuthPassword.isEmpty()) {
-        System.out.println("==> Oops, failed to read property [mail.auth.password] [CIMailRobot.properites]");
-        errLogger.println("==> Oops, failed to read property [mail.auth.password] [CIMailRobot.properites]");
-        houseKeeping();
-        System.exit(-1);
-      }
-      mailDefaultDomain = props.getProperty("mail.default.domain", "").trim();
-      if (mailDefaultDomain.isEmpty()) {
-        System.out.println("==> Oops, failed to read property [mail.default.domain] [CIMailRobot.properites]");
-        errLogger.println("==> Oops, failed to read property [mail.default.domain] [CIMailRobot.properites]");
-        houseKeeping();
-        System.exit(-1);
-      }
     }
     catch (IOException e) {
       System.out.println("==> Oops, failed to load properties [" + e.getMessage() + "] [CIMailSender()]");
       errLogger.println("==> Oops, failed to load properties [" + e.getMessage() + "] [CIMailSender()]");
       e.printStackTrace();
+      houseKeeping();
+      System.exit(-1);
+    }
+    mailSmtpHost = props.getProperty("mail.smtp.host", "").trim();
+    if (mailSmtpHost.isEmpty()) {
+      System.out.println("==> Oops, failed to read property [mail.smtp.host] [CIMailRobot.properites]");
+      errLogger.println("==> Oops, failed to read property [mail.smtp.host] [CIMailRobot.properites]");
+      houseKeeping();
+      System.exit(-1);
+    }
+    mailSmtpPort = props.getProperty("mail.smtp.port", "").trim();
+    if (mailSmtpPort.isEmpty()) {
+      System.out.println("==> Oops, failed to read property [mail.smtp.port] [CIMailRobot.properites]");
+      errLogger.println("==> Oops, failed to read property [mail.smtp.port] [CIMailRobot.properites]");
+      houseKeeping();
+      System.exit(-1);
+    }
+    mailAuthUsername = props.getProperty("mail.auth.username", "").trim();
+    if (mailAuthUsername.isEmpty()) {
+      System.out.println("==> Oops, failed to read property [mail.auth.username] [CIMailRobot.properites]");
+      errLogger.println("==> Oops, failed to read property [mail.auth.username] [CIMailRobot.properites]");
+      houseKeeping();
+      System.exit(-1);
+    }
+    mailAuthPassword = props.getProperty("mail.auth.password", "").trim();
+    if (mailAuthPassword.isEmpty()) {
+      System.out.println("==> Oops, failed to read property [mail.auth.password] [CIMailRobot.properites]");
+      errLogger.println("==> Oops, failed to read property [mail.auth.password] [CIMailRobot.properites]");
+      houseKeeping();
+      System.exit(-1);
+    }
+    mailDefaultDomain = props.getProperty("mail.default.domain", "").trim();
+    if (mailDefaultDomain.isEmpty()) {
+      System.out.println("==> Oops, failed to read property [mail.default.domain] [CIMailRobot.properites]");
+      errLogger.println("==> Oops, failed to read property [mail.default.domain] [CIMailRobot.properites]");
       houseKeeping();
       System.exit(-1);
     }
@@ -100,7 +102,7 @@ public final class CIMailSender extends CIMailLogger {
       System.exit(-1);
     }
     StringBuilder sbMailBody = new StringBuilder(4096);
-    Scanner sin = new Scanner(ins);
+    Scanner sin = new Scanner(ins, "UTF-8");
     Pattern ptnHL = Pattern.compile("\\A(\\s*)\\%HEADLINE\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
     Pattern ptnED = Pattern.compile("\\A(\\s*)\\%ERR_DETAILS\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
     Pattern ptnEL = Pattern.compile("\\A(\\s*)\\%ERR_LOGS\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
@@ -127,7 +129,7 @@ public final class CIMailSender extends CIMailLogger {
       }
       if (mtrED.matches()) {
         for (Map.Entry<String, String> compileErrDetail: compileErrDetails.entrySet()) {
-          String[] infos = compileErrDetail.getValue().split("\\:", 3);
+          final String[] infos = compileErrDetail.getValue().split("\\:", 3);
           if (infos.length != 3) {
             System.out.println("==> Oops, compile error details infomation is incorrect [" + compileErrDetail.getValue() + "]");
             errLogger.println("==> Oops, compile error details infomation is incorrect [" + compileErrDetail.getValue() + "]");
@@ -170,17 +172,17 @@ public final class CIMailSender extends CIMailLogger {
           
           message.replaceAll("<", "(");
           message.replaceAll(">", ")");
-          Pattern ptnArtfact = Pattern.compile("\\A\\s*\\[(artf\\d+)\\]\\s*\\:?\\s*(.*?)\\s*\\Z", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-          Matcher mtrArtfact = ptnArtfact.matcher(message);
-          if (mtrArtfact.find()) {
-            artfId = mtrArtfact.group(1);
-            artfTitle = mtrArtfact.group(2);
+          Pattern ptnArtifact = Pattern.compile("\\A\\s*\\[(artf\\d+)\\]\\s*\\:?\\s*(.*?)\\s*\\Z", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+          Matcher mtrArtifact = ptnArtifact.matcher(message);
+          if (mtrArtifact.find()) {
+            artfId = mtrArtifact.group(1);
+            artfTitle = mtrArtifact.group(2);
             if (ciSyncCTFArtfTitle.equalsIgnoreCase("Yes")) {
               artfTitle = ctfUtils.getArtifactTitle(artfId);
               if (artfTitle == null) {
                 System.out.println("==> Oops, failed to retrieve artifact title from CTF [" + artfId + "]");
                 errLogger.println("==> Oops, failed to retrieve artifact title from CTF [" + artfId + "]");
-                artfTitle = mtrArtfact.group(2);
+                artfTitle = mtrArtifact.group(2);
               }
             }
             message = String.format("[%s]{%s}", artfId, artfTitle);
@@ -207,6 +209,7 @@ public final class CIMailSender extends CIMailLogger {
       }
       sbMailBody.append(line + "\n");
     }
+    sin.close();
     if (ciSyncCTFArtfTitle.equalsIgnoreCase("Yes") || ciSyncCTFUserInfo.equalsIgnoreCase("Yes")) {
       ctfUtils.logoff();
     }
@@ -227,7 +230,7 @@ public final class CIMailSender extends CIMailLogger {
       System.exit(-1);
     }
     
-    String mailBody = generateMailBody(compileErrLogs, compileErrDetails);
+    final String mailBody = generateMailBody(compileErrLogs, compileErrDetails);
     
     String ciMailTOs = "";
     for (String ciMailTo: ciMailToList.keySet()) {
@@ -256,9 +259,9 @@ public final class CIMailSender extends CIMailLogger {
     props.put("mail.smtp.port", mailSmtpPort);
     try {
       Session session = Session.getInstance(props);
-      MimeMessage msg = new MimeMessage(session);
+      MimeMessage msg = new MimeMessage(session); 
       msg.setFrom(ciBuildType + " Mailing Robot <" + mailAuthUsername + "@" + mailDefaultDomain + ">");
-      msg.setSubject("[" + ciProject + "]" + "Detailed Information for " + ciBuildType + "@" + ciBuildID);
+      msg.setSubject("[" + ciProject + "]" + "Detailed Information for " + ciBuildType + "@" + ciBuildID, "UTF-8");
       msg.setSentDate(new Date());
       msg.setRecipients(Message.RecipientType.TO, ciMailTOs);
       msg.setRecipients(Message.RecipientType.CC, ciMailCCs);
@@ -270,6 +273,7 @@ public final class CIMailSender extends CIMailLogger {
       System.out.println("==> Oops, failed to send CI mail [" + e.getMessage() + "]");
       errLogger.println("==> Oops, failed to send CI mail [" + e.getMessage() + "]");
       e.printStackTrace();
+      houseKeeping();
       System.exit(-1);
     }
   }
@@ -280,22 +284,22 @@ public final class CIMailSender extends CIMailLogger {
     errLogger.close();
   }
   
-  private PrintWriter stdLogger = stdLoggerFactory();
-  private PrintWriter errLogger = errLoggerFactory();
+  private final PrintWriter stdLogger = stdLoggerFactory();
+  private final PrintWriter errLogger = errLoggerFactory();
   // file properties
-  private String mailSmtpHost;
-  private String mailSmtpPort;
-  private String mailAuthUsername;
-  private String mailAuthPassword;
-  private String mailDefaultDomain;
+  private final String mailSmtpHost;
+  private final String mailSmtpPort;
+  private final String mailAuthUsername;
+  private final String mailAuthPassword;
+  private final String mailDefaultDomain;
   // system properties [-D]
-  private String ciProject;
-  private String ciBuildID;
-  private String ciBuildURL;
+  private final String ciProject;
+  private final String ciBuildID;
+  private final String ciBuildURL;
+  private final String ciSyncCTFArtfTitle;
+  private final String ciSyncCTFUserInfo;
   private String ciBuildType;
   private String ciMailCCs;
-  private String ciSyncCTFArtfTitle;
-  private String ciSyncCTFUserInfo;
   //
-  private HashMap<String, String> ciMailToList;
+  private final HashMap<String, String> ciMailToList;
 }

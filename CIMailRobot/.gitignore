@@ -1,3 +1,7 @@
 *.class
-/target
 /*.txt
+/target/
+# Eclipse ignore settings
+/.classpath
+/.project
+/.settings/
