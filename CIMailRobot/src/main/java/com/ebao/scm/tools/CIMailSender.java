@@ -120,8 +120,8 @@ public final class CIMailSender extends CIMailLogger {
       Matcher mtrEL = ptnEL.matcher(line);
       Matcher mtrURL = ptnURL.matcher(line);
       if (mtrHL.matches()) {
-        ciProject.replaceAll("<", "(");
-        ciProject.replaceAll(">", ")");
+        // ciProject.replaceAll("<", "(");
+        // ciProject.replaceAll(">", ")");
         sbMailBody.append(String.format("%s%s for <span style=\"font-weight:bold;\">%s</span> " + 
           "encountered some <span style=\"color:red; font-weight:bold;\">compilation errors</span>, " + 
           "please refer to the details below:\n", mtrHL.group(1), ciBuildType, ciProject));
@@ -170,8 +170,8 @@ public final class CIMailSender extends CIMailLogger {
           }
           ciMailToList.put(email.trim(), "");
           
-          message.replaceAll("<", "(");
-          message.replaceAll(">", ")");
+          message = message.replaceAll("<", "(");
+          message = message.replaceAll(">", ")");
           Pattern ptnArtifact = Pattern.compile("\\A\\s*\\[(artf\\d+)\\]\\s*\\:?\\s*(.*?)\\s*\\Z", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
           Matcher mtrArtifact = ptnArtifact.matcher(message);
           if (mtrArtifact.find()) {
@@ -197,8 +197,8 @@ public final class CIMailSender extends CIMailLogger {
       }
       if (mtrEL.matches()) {
         for (String compileErrLog: compileErrLogs) {
-          compileErrLog.replaceAll("<", "(");
-          compileErrLog.replaceAll(">", ")");
+          compileErrLog = compileErrLog.replaceAll("<", "(");
+          compileErrLog = compileErrLog.replaceAll(">", ")");
           sbMailBody.append(mtrEL.group(1) + compileErrLog + "<br>\n");
         }
         continue;
