@@ -22,29 +22,29 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public final class CIMailSender extends CIMailLogger {
   public CIMailSender() {
-    ciProject = System.getProperty("ci.project", "").trim();
-    ciBuildID = System.getProperty("ci.build.id", "YYYY-MM-DD_hh-mm-ss").trim();
-    ciBuildURL = System.getProperty("ci.build.url", "").trim();
-    ciBuildType = System.getProperty("ci.build.type", "CI").trim();
-    ciMailCCs = System.getProperty("ci.mail.cclist", "").trim();
-    ciSyncCTFArtfTitle = System.getProperty("ci.sync.ctf.artf.title", "No").trim();
-    ciSyncCTFUserInfo = System.getProperty("ci.sync.ctf.user.info", "No").trim();
-    
+    ciProject = System.getProperty("ci_project", "").trim();
+    ciBuildID = System.getProperty("ci_build_id", "YYYY-MM-DD_hh-mm-ss").trim();
+    ciBuildURL = System.getProperty("ci_build_url", "").trim();
+    ciBuildType = System.getProperty("ci_build_type", "CI").trim();
+    ciMailCCs = System.getProperty("ci_mail_cclist", "").trim();
+    ciSyncCTFArtfTitle = System.getProperty("ci_sync_ctf_artf_title", "No").trim();
+    ciSyncCTFUserInfo = System.getProperty("ci_sync_ctf_user_info", "No").trim();
+
     if (ciBuildType.equalsIgnoreCase("CI")) {
       ciBuildType = "Continuous Compile";
     }
     if (ciBuildType.equalsIgnoreCase("Nightly")) {
       ciBuildType = "Nightly Build";
     }
-    
-    InputStream ins = CIMailSender.class.getResourceAsStream("CIMailRobot.properties");
+
+    final InputStream ins = CIMailSender.class.getResourceAsStream("CIMailRobot.properties");
     if (ins == null) {
       System.out.println("==> Oops, failed to read property file [CIMailRobot.properites] [CIMailSender()]");
       errLogger.println("==> Oops, failed to read property file [CIMailRobot.properites] [CIMailSender()]");
       houseKeeping();
       System.exit(-1);
     }
-    Properties props = new Properties();
+    final Properties props = new Properties();
     try {
       props.load(ins);
     }
@@ -92,21 +92,21 @@ public final class CIMailSender extends CIMailLogger {
     }
     ciMailToList = new HashMap<String, String>(20);
   }
-  
+
   private String generateMailBody(final ArrayList<String> compileErrLogs, final HashMap<String, String> compileErrDetails) {
-    InputStream ins = CIMailSender.class.getResourceAsStream("email.template");
+    final InputStream ins = CIMailSender.class.getResourceAsStream("email.template");
     if (ins == null) {
       System.out.println("==> Oops, failed to read email template [CIMailSender.generateMailBody()]");
       errLogger.println("==> Oops, failed to read email template [CIMailSender.generateMailBody()]");
       houseKeeping();
       System.exit(-1);
     }
-    StringBuilder sbMailBody = new StringBuilder(4096);
-    Scanner sin = new Scanner(ins, "UTF-8");
-    Pattern ptnHL = Pattern.compile("\\A(\\s*)\\%HEADLINE\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
-    Pattern ptnED = Pattern.compile("\\A(\\s*)\\%ERR_DETAILS\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
-    Pattern ptnEL = Pattern.compile("\\A(\\s*)\\%ERR_LOGS\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
-    Pattern ptnURL = Pattern.compile("\\A(\\s*)\\%BUILD_URL\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
+    final StringBuilder sbMailBody = new StringBuilder(4096);
+    final Scanner sin = new Scanner(ins, "UTF-8");
+    final Pattern ptnHL = Pattern.compile("\\A(\\s*)\\%HEADLINE\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
+    final Pattern ptnED = Pattern.compile("\\A(\\s*)\\%ERR_DETAILS\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
+    final Pattern ptnEL = Pattern.compile("\\A(\\s*)\\%ERR_LOGS\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
+    final Pattern ptnURL = Pattern.compile("\\A(\\s*)\\%BUILD_URL\\%\\s*\\Z", Pattern.CASE_INSENSITIVE);
     CIMailCTFUtils ctfUtils = null;
     if (ciSyncCTFArtfTitle.equalsIgnoreCase("Yes") || ciSyncCTFUserInfo.equalsIgnoreCase("Yes")) {
       ctfUtils = new CIMailCTFUtils();
@@ -114,16 +114,16 @@ public final class CIMailSender extends CIMailLogger {
     }
     ciMailToList.clear();
     while (sin.hasNextLine()) {
-      String line = sin.nextLine();
-      Matcher mtrHL = ptnHL.matcher(line);
-      Matcher mtrED = ptnED.matcher(line);
-      Matcher mtrEL = ptnEL.matcher(line);
-      Matcher mtrURL = ptnURL.matcher(line);
+      final String line = sin.nextLine();
+      final Matcher mtrHL = ptnHL.matcher(line);
+      final Matcher mtrED = ptnED.matcher(line);
+      final Matcher mtrEL = ptnEL.matcher(line);
+      final Matcher mtrURL = ptnURL.matcher(line);
       if (mtrHL.matches()) {
         // ciProject.replaceAll("<", "(");
         // ciProject.replaceAll(">", ")");
-        sbMailBody.append(String.format("%s%s for <span style=\"font-weight:bold;\">%s</span> " + 
-          "encountered some <span style=\"color:red; font-weight:bold;\">compilation errors</span>, " + 
+        sbMailBody.append(String.format("%s%s for <span style=\"font-weight:bold;\">%s</span> " +
+          "encountered some <span style=\"color:red; font-weight:bold;\">compilation errors</span>, " +
           "please refer to the details below:\n", mtrHL.group(1), ciBuildType, ciProject));
         continue;
       }
@@ -158,7 +158,7 @@ public final class CIMailSender extends CIMailLogger {
             }
           }
           else {
-            if (username.startsWith("alm.") || username.startsWith("cht.") || username.startsWith("sf.") || !username.contains(".") 
+            if (username.startsWith("alm.") || username.startsWith("cht.") || username.startsWith("sf.") || !username.contains(".")
                 || (username.indexOf(".") != username.lastIndexOf(".")) || username.matches(".+\\d+.*")) {
               fullname = username;
             }
@@ -169,11 +169,11 @@ public final class CIMailSender extends CIMailLogger {
             email = username + "@" + mailDefaultDomain;
           }
           ciMailToList.put(email.trim(), "");
-          
+
           message = message.replaceAll("<", "(");
           message = message.replaceAll(">", ")");
-          Pattern ptnArtifact = Pattern.compile("\\A\\s*\\[(artf\\d+)\\]\\s*\\:?\\s*(.*?)\\s*\\Z", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-          Matcher mtrArtifact = ptnArtifact.matcher(message);
+          final Pattern ptnArtifact = Pattern.compile("\\A\\s*\\[(artf\\d+)\\]\\s*\\:?\\s*(.*?)\\s*\\Z", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+          final Matcher mtrArtifact = ptnArtifact.matcher(message);
           if (mtrArtifact.find()) {
             artfId = mtrArtifact.group(1);
             artfTitle = mtrArtifact.group(2);
@@ -215,7 +215,7 @@ public final class CIMailSender extends CIMailLogger {
     }
     return sbMailBody.toString();
   }
-  
+
   public void send(final ArrayList<String> compileErrLogs, final HashMap<String, String> compileErrDetails) {
     if (compileErrLogs == null) {
       System.out.println("==> Oops, [compileErrLogs] cannot be null [CIMailSender.send()]");
@@ -229,9 +229,9 @@ public final class CIMailSender extends CIMailLogger {
       houseKeeping();
       System.exit(-1);
     }
-    
+
     final String mailBody = generateMailBody(compileErrLogs, compileErrDetails);
-    
+
     String ciMailTOs = "";
     for (String ciMailTo: ciMailToList.keySet()) {
       if (ciMailTo.isEmpty()) {
@@ -240,8 +240,8 @@ public final class CIMailSender extends CIMailLogger {
       ciMailTOs += (ciMailTo + ",");
     }
     stdLogger.println("==> mailTOs: [" + ciMailTOs + "]");
-    
-    String[] ciMailCcList = ciMailCCs.split(",");
+
+    final String[] ciMailCcList = ciMailCCs.split(",");
     ciMailCCs = "";
     for (String ciMailCc: ciMailCcList) {
       if (ciMailCc.isEmpty()) {
@@ -253,13 +253,13 @@ public final class CIMailSender extends CIMailLogger {
       ciMailCCs += (ciMailCc + ",");
     }
     stdLogger.println("==> mailCCs: [" + ciMailCCs + "]");
-    
-    Properties props = new Properties();
+
+    final Properties props = new Properties();
     props.put("mail.smtp.host", mailSmtpHost);
     props.put("mail.smtp.port", mailSmtpPort);
     try {
-      Session session = Session.getInstance(props);
-      MimeMessage msg = new MimeMessage(session); 
+      final Session session = Session.getInstance(props);
+      final MimeMessage msg = new MimeMessage(session);
       msg.setFrom(ciBuildType + " Mailing Robot <" + mailAuthUsername + "@" + mailDefaultDomain + ">");
       msg.setSubject("[" + ciProject + "]" + "Detailed Information for " + ciBuildType + "@" + ciBuildID, "UTF-8");
       msg.setSentDate(new Date());
@@ -277,13 +277,13 @@ public final class CIMailSender extends CIMailLogger {
       System.exit(-1);
     }
   }
-  
+
   @Override
   public void houseKeeping() {
     stdLogger.close();
     errLogger.close();
   }
-  
+
   private final PrintWriter stdLogger = stdLoggerFactory();
   private final PrintWriter errLogger = errLoggerFactory();
   // file properties

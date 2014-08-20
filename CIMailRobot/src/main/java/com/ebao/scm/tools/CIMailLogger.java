@@ -8,16 +8,16 @@ public abstract class CIMailLogger {
   public static PrintWriter stdLoggerFactory() {
     return stdLogger;
   }
-  
+
   public static PrintWriter errLoggerFactory() {
     return errLogger;
   }
-  
+
   public abstract void houseKeeping();
-  
+
   private static PrintWriter stdLogger;
   private static PrintWriter errLogger;
-  
+
   static {
     try {
       stdLogger = new PrintWriter("stdLog.txt", "UTF-8");

@@ -18,7 +18,7 @@ public final class CIMailParser extends CIMailLogger {
     compileErrLogs = new ArrayList<String>(50);
     compileErrDetails = new HashMap<String, String>(50);
   }
-  
+
   public boolean parse(String clog, String prefix) {
     if (clog == null) {
       System.out.println("==> Oops, clog cannot be null [CIMailParser.parse()]");
@@ -57,13 +57,13 @@ public final class CIMailParser extends CIMailLogger {
       System.exit(-1);
     }
     // parse for compilation error logs
-    Pattern ptnBOE = Pattern.compile("(?:\\[(?:javac|info)\\]\\s*compiling\\s+\\d+)|(?:\\[error\\]\\s*failed\\s+to.+compilation\\s+failure)", Pattern.CASE_INSENSITIVE);
-    Pattern ptnEOE = Pattern.compile("(?:\\[(?:javac|info)\\]\\s*\\d+\\s*error)|(?:\\[error\\]\\s*->\\s*\\[\\s*help\\s*\\d+\\s*\\])|(?:\\[(?:java|info)\\]\\s*build\\s+(?:failed|failure))", Pattern.CASE_INSENSITIVE);
+    final Pattern ptnBOE = Pattern.compile("(?:\\[(?:javac|info)\\]\\s*compiling\\s+\\d+)|(?:\\[error\\]\\s*failed\\s+to.+compilation\\s+failure)", Pattern.CASE_INSENSITIVE);
+    final Pattern ptnEOE = Pattern.compile("(?:\\[(?:javac|info)\\]\\s*\\d+\\s*error)|(?:\\[error\\]\\s*->\\s*\\[\\s*help\\s*\\d+\\s*\\])|(?:\\[(?:java|info)\\]\\s*build\\s+(?:failed|failure))", Pattern.CASE_INSENSITIVE);
     boolean flag = false;
     while (sin.hasNextLine()) {
-      String line = sin.nextLine().trim();
-      Matcher mtrBOE = ptnBOE.matcher(line);
-      Matcher mtrEOE = ptnEOE.matcher(line);
+      final String line = sin.nextLine().trim();
+      final Matcher mtrBOE = ptnBOE.matcher(line);
+      final Matcher mtrEOE = ptnEOE.matcher(line);
       if (mtrBOE.find()) {
         compileErrLogs.clear();
       }
@@ -119,7 +119,7 @@ public final class CIMailParser extends CIMailLogger {
       System.exit(-1);
     }
     // parse for compilation error details
-    CIMailSVNUtils svnUtils = new CIMailSVNUtils();
+    final CIMailSVNUtils svnUtils = new CIMailSVNUtils();
     for (String compileErrFile: compileErrDetails.keySet()) {
       svnUtils.doLog(prefix + "/" + compileErrFile);
       final String svnAuthor = svnUtils.getAuthor();
@@ -134,7 +134,7 @@ public final class CIMailParser extends CIMailLogger {
     stdLogger.println("--------------------------------------------------");
     return true;
   }
-  
+
   /*
    * Caveats:
    * - parse() must be called before this method, otherwise, the behavior is undefined
@@ -143,7 +143,7 @@ public final class CIMailParser extends CIMailLogger {
   public ArrayList<String> getCompileErrLogs() {
     return compileErrLogs;
   }
-  
+
   /*
    * Caveats:
    * - parse() must be called before this method, otherwise, the behavior is undefined
@@ -152,13 +152,13 @@ public final class CIMailParser extends CIMailLogger {
   public HashMap<String, String> getCompileErrDetails() {
     return compileErrDetails;
   }
-  
+
   @Override
   public void houseKeeping() {
     stdLogger.close();
     errLogger.close();
   }
-  
+
   private final PrintWriter stdLogger = stdLoggerFactory();
   private final PrintWriter errLogger = errLoggerFactory();
   private final ArrayList<String> compileErrLogs;

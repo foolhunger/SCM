@@ -14,14 +14,14 @@ import com.collabnet.ce.soap60.webservices.tracker.ITrackerAppSoap;
 
 public final class CIMailCTFUtils extends CIMailLogger {
   public CIMailCTFUtils() {
-    InputStream ins = CIMailCTFUtils.class.getResourceAsStream("CIMailRobot.properties");
+    final InputStream ins = CIMailCTFUtils.class.getResourceAsStream("CIMailRobot.properties");
     if (ins == null) {
       System.out.println("==> Oops, failed to read property file [CIMailRobot.properites] [CIMailCTFUtils()]");
       errLogger.println("==> Oops, failed to read property file [CIMailRobot.properites] [CIMailCTFUtils()]");
       houseKeeping();
       System.exit(-1);
     }
-    Properties props = new Properties();
+    final Properties props = new Properties();
     try {
       props.load(ins);
     }
@@ -53,6 +53,8 @@ public final class CIMailCTFUtils extends CIMailLogger {
       houseKeeping();
       System.exit(-1);
     }
+    ICollabNetSoap ctfCemainSoap = null;
+    ITrackerAppSoap ctfTrackerSoap = null;
     try {
       ctfCemainSoap = (ICollabNetSoap) ClientSoapStubFactory.getSoapStub(ICollabNetSoap.class, ctfURL);
       ctfTrackerSoap = (ITrackerAppSoap) ClientSoapStubFactory.getSoapStub(ITrackerAppSoap.class, ctfURL);
@@ -64,8 +66,10 @@ public final class CIMailCTFUtils extends CIMailLogger {
       houseKeeping();
       System.exit(-1);
     }
+    this.ctfCemainSoap = ctfCemainSoap;
+    this.ctfTrackerSoap = ctfTrackerSoap;
   }
-  
+
   public void login() {
     try {
       ctfSessionId = ctfCemainSoap.login(ctfAuthUsername, ctfAuthPassword);
@@ -79,7 +83,7 @@ public final class CIMailCTFUtils extends CIMailLogger {
     }
     stdLogger.println("==> Teamforge: logged in as user [" + ctfAuthUsername + "]");
   }
-  
+
   public void logoff() {
     try {
       ctfCemainSoap.logoff(ctfAuthUsername, ctfSessionId);
@@ -93,7 +97,7 @@ public final class CIMailCTFUtils extends CIMailLogger {
     }
     stdLogger.println("==> Teamforge: logged off as user [" + ctfAuthUsername + "]");
   }
-  
+
   public String getArtifactTitle(final String artifactId) {
     if (artifactId == null) {
       System.out.println("==> Oops, artifact id cannot be null [CIMailCTFUtils.getArtifactTitle()]");
@@ -113,7 +117,7 @@ public final class CIMailCTFUtils extends CIMailLogger {
     }
     return artifactTitle;
   }
-  
+
   public String getUserFullName(final String username) {
     if (username == null) {
       System.out.println("==> Oops, username cannot be null [CIMailCTFUtils.getUserFullName()]");
@@ -133,7 +137,7 @@ public final class CIMailCTFUtils extends CIMailLogger {
     }
     return userFullName;
   }
-  
+
   public String getUserEmail(final String username) {
     if (username == null) {
       System.out.println("==> Oops, username cannot be null [CIMailCTFUtils.getUserEmail()]");
@@ -153,19 +157,19 @@ public final class CIMailCTFUtils extends CIMailLogger {
     }
     return userEmail;
   }
-  
+
   @Override
   public void houseKeeping() {
     stdLogger.close();
     errLogger.close();
   }
-  
+
   private final PrintWriter stdLogger = stdLoggerFactory();
   private final PrintWriter errLogger = errLoggerFactory();
   private final String ctfURL;
   private final String ctfAuthUsername;
   private final String ctfAuthPassword;
   private String ctfSessionId;
-  private ICollabNetSoap ctfCemainSoap;
-  private ITrackerAppSoap ctfTrackerSoap;
+  private final ICollabNetSoap ctfCemainSoap;
+  private final ITrackerAppSoap ctfTrackerSoap;
 }

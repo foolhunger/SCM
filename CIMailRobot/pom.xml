@@ -14,7 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jdk.version>1.6</jdk.version>
   </properties>
-  
+
   <build>
     <finalName>${project.artifactId}</finalName>
     <plugins>
@@ -77,7 +77,7 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.tmatesoft.svnkit</groupId>
